@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "my-cam",
+    "slug": "my-cam",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
