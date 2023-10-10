@@ -5,6 +5,39 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
+    ],
+    "android": {
+      "versionCode": 2,
+      "permissions": [
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE"
+      ],
+      "package": "com.mycam.mobile"
+    },
+    "ios": {
+      "bundleIdentifier": "com.mycam.mobile",
+      "buildNumber": "1.0.2",
+      "infoPlist": {
+        "NSCameraUsageDescription": "MyCam deseja acessar sua câmera",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "MyCam deseja acessar sua localização",
+        "NSLocationWhenInUseUsageDescription": "MyCam deseja acessar sua localização",
+        "NSPhotoLibraryUsageDescription": "MyCam deseja acessar sua galeria de fotos"
+      }
+    },
+    "plugins": [
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermission": "MyCam deseja acessar sua câmera",
+          "cameraRollPermission": "MyCam deseja acessar sua galeria de fotos"
+        }
+      ],
+      "react-native-vision-camera"
     ]
   }
 }

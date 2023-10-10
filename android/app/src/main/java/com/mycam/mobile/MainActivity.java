@@ -1,4 +1,4 @@
-package com.mycam;
+package com.mycam.mobile;
 
 import android.os.Build;
 import android.os.Bundle;

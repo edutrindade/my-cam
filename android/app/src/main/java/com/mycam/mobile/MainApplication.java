@@ -1,4 +1,4 @@
-package com.mycam;
+package com.mycam.mobile;
 
 import android.app.Application;
 import android.content.res.Configuration;
