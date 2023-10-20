@@ -1,44 +1,52 @@
 import 'react-native-reanimated';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Text, View, TouchableOpacity } from 'react-native';
-import { Camera } from 'expo-camera';
+// import { Camera } from 'expo-camera';
+import { Camera, useCameraDevice } from 'react-native-vision-camera';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Slider } from '@rneui/themed';
 
 import { styles } from './styles';
 
 export default function App() {
-  const [cameraRef, setCameraRef] = useState(null);
+  const camera = useRef<Camera>(null);
+  const device = useCameraDevice('back')
+  const [imageSource, setImageSource] = useState<string>(''); // Imagem capturada
   const [exposure, setExposure] = useState(0); // Tempo de exposição
   const [iso, setIso] = useState(100); // ISO
 
   useEffect(() => {
-    requestCameraPermission();
+    async function getPermission() {
+      const newCameraPermission = await Camera.requestCameraPermission();
+      console.log('newCameraPermission', newCameraPermission);
+    }
+    getPermission();
   }, []);
 
-  const requestCameraPermission = async () => {
-    const { status } = await Camera.requestCameraPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Permissão de câmera não concedida');
+  const takePicture = async () => {
+    if (camera.current !== null) {
+      const photo = await camera.current.takePhoto({});
+      setImageSource(photo.path);
+      console.log('path', photo.path);
     }
   }
 
-  const takePicture = async () => {
-    if (cameraRef) {
-      const options = {
-        quality: 1,
-        base64: true,
-        exposure: exposure, // Configura o tempo de exposição
-        iso: iso, // Configura o ISO
-      };
-      const data = await cameraRef.takePictureAsync(options);
-      console.log(data.uri);
-    }
-  };
+  // const takePicture = async () => {
+  //   if (cameraRef) {
+  //     const options = {
+  //       quality: 1,
+  //       base64: true,
+  //       exposure: exposure, // Configura o tempo de exposição
+  //       iso: iso, // Configura o ISO
+  //     };
+  //     const data = await cameraRef.takePictureAsync(options);
+  //     console.log(data.uri);
+  //   }
+  // };
 
   const incrementExposure = async (quantity: number) => {
-    if (cameraRef) {
+    if (camera) {
       setExposure(exposure + quantity);
     }
   }
@@ -56,7 +64,15 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <View style={{ flex: 1 }}>
-        <Camera style={{ flex: 1 }} ref={(ref) => setCameraRef(ref)} />
+
+        <Camera
+          ref={camera}
+          style={styles.cameraPreview}
+          photo={true}
+          device={device}
+          isActive={true}
+        />
+
 
         <View style={styles.controlsContainer}>
           <Text style={styles.controlText}>Tempo de Exposição</Text>
