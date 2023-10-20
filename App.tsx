@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Text, View, TouchableOpacity } from 'react-native';
 // import { Camera } from 'expo-camera';
-import { Camera, useCameraDevice } from 'react-native-vision-camera';
+import { Camera, useCameraDevice, useCameraFormat } from 'react-native-vision-camera';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Slider } from '@rneui/themed';
 
@@ -15,6 +15,11 @@ export default function App() {
   const [imageSource, setImageSource] = useState<string>(''); // Imagem capturada
   const [exposure, setExposure] = useState(0); // Tempo de exposição
   const [iso, setIso] = useState(100); // ISO
+
+  const format = useCameraFormat(device, [
+    { photoHDR: true },
+    { videoHDR: true },
+  ])
 
   useEffect(() => {
     async function getPermission() {
@@ -71,6 +76,8 @@ export default function App() {
           photo={true}
           device={device}
           isActive={true}
+          format={format}
+          hdr={true}
         />
 
 
